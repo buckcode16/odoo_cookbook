@@ -1,0 +1,11 @@
+{
+  "name": "Odoo 19 Dev Environment",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "odoo",
+
+  "workspaceFolder": "/opt/odoo/project",
+
+  "remoteUser": "odoo"
+
+  
+}
