@@ -29,16 +29,16 @@
                 <sheet>
                     <group>
                             <field name="name"/>
-                        <group>
                             <field name="property_tag_ids" widget="many2many_tags"/>
+                        <group>
                             <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
                         <group>
                             <field name="expected_price"/>
+                            <field name="best_offer"/>
                             <field name="selling_price"/>
-                            <field name="state"/>
                         </group>
                     </group>
                     <notebook>
@@ -52,6 +52,7 @@
                                 <field name="garden"/>
                                 <field name="garden_area"/>
                                 <field name="garden_orientation"/>
+                                <field name="total_area"/>
                             </group>
                         </page>
                         <page string="Offers">
@@ -60,6 +61,8 @@
                                     <field name="price"/>
                                     <field name="partner_id"/>
                                     <field name="status"/>
+                                    <field name="validity"/>
+                                    <field name="date_deadline"/>
                                 </list>
                             </field>
                         </page>

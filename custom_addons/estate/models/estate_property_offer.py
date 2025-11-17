@@ -1,4 +1,6 @@
-from odoo import fields, models
+from odoo import api, fields, models
+from datetime import date
+from dateutil.relativedelta import relativedelta
 
 class EstatePropertyOffer(models.Model):
     _name = "estate.property.offer"
@@ -14,3 +16,18 @@ class EstatePropertyOffer(models.Model):
     )
     partner_id = fields.Many2one("res.partner", string="Partner",required=True,)
     property_id = fields.Many2one("estate.property", string="Property",required=True,)
+
+    validity = fields.Integer()
+    date_deadline = fields.Date(compute="_compute_date_deadline")
+
+    @api.depends("create_date", 'validity')
+    def _compute_date_deadline(self):
+        for record in self:
+            base_date = record.create_date.date() if record.create_date else date.today()
+            record.date_deadline = base_date + relativedelta(days=record.validity)
+
+    def _inverse_date_deadline(self):
+        for record in self:
+            base_date = record.create_date.date() if record.create_date else date.today()
+            delta = record.date_deadline - base_date
+            record.validity = delta.days
