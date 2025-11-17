@@ -7,9 +7,10 @@ class EstateProperty(models.Model):
     _description = "Real Estate Property"
 
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
-    buyer_id = fields.Many2one("res.users", string="Buyer")
+    buyer_id = fields.Many2one("res.partner", string="Buyer")
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
     property_tag_ids = fields.Many2many("estate.property.tag", string="Property Tag")
+    property_offer_ids = fields.One2many("estate.property.offer", "property_id", string="Property Offer")
 
     name = fields.Char(required=True)
     description = fields.Text()
@@ -35,11 +36,11 @@ class EstateProperty(models.Model):
     active = fields.Boolean(default=True)
     state = fields.Selection(
         selection=[
-            ('New', 'New'),
-            ('Offer Received', 'Offer Received'),
-            ('Offer Accepted', 'Offer Accepted'),
-            ('Sold', 'Sold'),
-            ('Cancelled', 'Cancelled')
+            ('new', 'New'),
+            ('offer_received', 'Offer Received'),
+            ('offer_accepted', 'Offer Accepted'),
+            ('sold', 'Sold'),
+            ('cancelled', 'Cancelled')
         ],
         required=True,
         copy=False,
