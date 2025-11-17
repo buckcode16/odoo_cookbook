@@ -28,8 +28,10 @@
             <form string="Property">
                 <sheet>
                     <group>
-                        <group>
                             <field name="name"/>
+                        <group>
+                            <field name="property_tag_ids" widget="many2many_tags"/>
+                            <field name="property_type_id"/>
                             <field name="postcode"/>
                             <field name="date_availability"/>
                         </group>
@@ -54,7 +56,8 @@
                         </page>
                         <page string="Other Info">
                             <group>
-                                <field name="active"/>
+                                <field name="salesperson_id"/>
+                                <field name="buyer_id"/>
                             </group>
                         </page>
                     </notebook>
