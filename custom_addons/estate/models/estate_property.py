@@ -17,6 +17,8 @@ class EstateProperty(models.Model):
         'The selling price must be positive.'
     )
 
+    _order = "id desc"
+
     property_type_id = fields.Many2one("estate.property.type", string="Property Type")
     buyer_id = fields.Many2one("res.partner", string="Buyer")
     salesperson_id = fields.Many2one("res.users", string="Salesperson", default=lambda self: self.env.user)
