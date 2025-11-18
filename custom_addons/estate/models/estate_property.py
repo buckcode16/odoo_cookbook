@@ -1,6 +1,6 @@
 from odoo import api, fields, models
-from odoo.exceptions import UserError
-from odoo.tools import float_utils
+from odoo.exceptions import UserError, ValidationError
+from odoo.tools.float_utils import float_is_zero, float_compare
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -84,6 +84,19 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+    """
+        Add a constraint so that the selling price cannot be lower than 90% of the expected price.
+        The selling price is zero until an offer is validated. You will need to fine tune your check to take this into account.
+        Always use the float_compare() and float_is_zero() methods from odoo.tools.float_utils when working with floats!
+        Ensure the constraint is triggered every time the selling price or the expected price is changed!
+    """
+    @api.constrains("selling_price", "expected_price")
+    def check_selling_price(self):
+        for record in self:
+            if not float_is_zero(record.selling_price, precision_digits=2) and \
+               float_compare(record.selling_price, record.expected_price * 0.9, precision_digits=2) < 0:
+                raise ValidationError("The selling price cannot be lower than 90% of the expected price.")
 
     def action_sold(self):
         for record in self:

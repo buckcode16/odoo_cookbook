@@ -52,4 +52,5 @@ class EstatePropertyOffer(models.Model):
     def action_reject(self):
         for record in self:
             record.status = "rejected"
+            record.property_id.state = "offer_received"
         return True
