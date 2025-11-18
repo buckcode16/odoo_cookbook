@@ -58,7 +58,6 @@ class EstateProperty(models.Model):
         required=True,
         copy=False,
         default= 'new',
-        string = "Status"
     )
 
     best_offer = fields.Float(compute="_compute_best_price", string = "Best Offer")
