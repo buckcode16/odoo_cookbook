@@ -1,4 +1,5 @@
 from odoo import api, fields, models
+from odoo.exceptions import UserError
 from datetime import date
 from dateutil.relativedelta import relativedelta
 
@@ -44,7 +45,8 @@ class EstateProperty(models.Model):
         ],
         required=True,
         copy=False,
-        default='new'
+        default= 'new',
+        string = "Status"
     )
 
     best_offer = fields.Float(compute="_compute_best_price", string = "Best Offer")
@@ -57,6 +59,7 @@ class EstateProperty(models.Model):
                 record.best_offer = max(record.property_offer_ids.mapped('price'))
             else:
                 record.best_offer = 0.0
+
 
     @api.depends("living_area", "garden_area")
     def _compute_total_area(self):
@@ -71,3 +74,20 @@ class EstateProperty(models.Model):
         else:
             self.garden_area = 0
             self.garden_orientation = False
+
+
+    def action_sold(self):
+        for record in self:
+            if record.state == "cancelled":
+                raise UserError("Cancelled properties cannot be sold")
+            record.state = "sold"
+
+        return True
+
+    def action_cancel(self):
+        for record in self:
+            if record.state == "sold":
+                raise UserError("Sold properties cannot be cancelled")
+            record.state = "cancelled"
+
+        return True
