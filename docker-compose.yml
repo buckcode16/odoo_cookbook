@@ -22,6 +22,8 @@ services:
       - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
       - odoo-db-data:/var/lib/postgresql/data/pgdata
+      - odoo-web-data:/var/lib/odoo
     
 volumes:
   odoo-db-data:
+  odoo-web-data:
